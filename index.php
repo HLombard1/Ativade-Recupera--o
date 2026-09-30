@@ -29,9 +29,9 @@
         <label for="faixa_etaria">Faixa etaria</label>
         <select type="" id="faixa_etaria">
             <option value="">Selecione</option>
-            <option value="plastico">plastico</option>
-            <option value="pano">pano</option>
-            <option value="maleavel">maleavel</option>
+            <option value="plastico">1-5</option>
+            <option value="pano">6-7</option>
+            <option value="maleavel">8-12</option>
         </select>
 
         <br>
