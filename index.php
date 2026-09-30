@@ -71,5 +71,33 @@
         <button type="submit">Cadastrar</button>
 
     </form>
+
+    <h2>Livros Cadastrados</h2>
+
+            <table>
+
+                <tr>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Faixa Etaria</th>
+                    <th>Preco</th>
+                    <th>Quantidade de Estoque</th>
+                </tr>
+
+                <?php while ($brinquedo = mysqli_fetch_assoc($brinquedos)) { ?>
+                    <tr>
+                        <td><?php echo $brinquedos["nome"] ?></td>
+                        <td><?php echo $brinquedos["categoria"] ?></td>
+                        <td><?php echo $brinquedos["faixa_etaria"] ?></td>
+                        <td><?php echo $brinquedos["preco"] ?></td>
+                        <td><?php echo $brinquedos["quantidade_estoque"] ?></td>
+                        <td>
+                            <a href="public/editar.php?id=<?php echo $brinquedos["id"] ?>">Editar</a>
+                            <a href="public/excluir.php?id=<?php echo $brinquedos["id"] ?>">Excluir</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+
+            </table>
 </body>
 </html>
