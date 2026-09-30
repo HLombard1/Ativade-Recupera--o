@@ -3,6 +3,6 @@
 $host = "localhost";
 $usuario = "root";
 $senha = "";
-$banco = "farmacia";
+$banco = "loja_brinquedos";
 
-$conexao = new mysql($host, $usuario, $senha, $banco)$
+$conexao = new mysqli($host, $usuario, $senha, $banco);

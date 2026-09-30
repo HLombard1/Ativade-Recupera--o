@@ -1,4 +1,26 @@
 <!-- Estou curingando professor -->
+<?php
+
+    include "infra/conexao.php";
+
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        $nome = $_POST["nome"];
+        $categoria = $_POST["categoria"];
+        $faixa_etaria = $_POST["faixa_etaria"];
+        $preco = $_POST["preco"];
+        $quantidade_estoque = $_POST["quantidade_estoque"];
+
+
+
+        $sql = "INSERT INTO brinquedos(nome, categoria, faixa_etaria, preco, quantidade_estoque) VALUES ('$nome', '$categoria', '$faixa_etaria', '$preco', '$quantidade_estoque')";
+
+        mysqli_query($conexao, $sql);
+
+    };
+
+
+
+?>
 
 <html lang="en">
 <head>
@@ -7,17 +29,17 @@
     <title>Loja de Brinquedos</title>
 </head>
 <body>
-    <h1>Cadestre um Brinquedo!</h1>
+    <h1>Cadastre um Brinquedo!</h1>
 
     <form action="" method="POST">
 
         <label for="nome">Nome</label>
-        <input type="" id="nome"></label>
+        <input type="text" name="nome"></label>
 
         <br>
 
         <label for="categoria">Categoria</label>
-        <select type="" id="categoria">
+        <select name="categoria">
             <option value="">Selecione</option>
             <option value="plastico">plastico</option>
             <option value="pano">pano</option>
@@ -27,7 +49,7 @@
         <br>
 
         <label for="faixa_etaria">Faixa etaria</label>
-        <select type="" id="faixa_etaria">
+        <select name="faixa_etaria">
             <option value="">Selecione</option>
             <option value="plastico">1-5</option>
             <option value="pano">6-7</option>
@@ -37,12 +59,12 @@
         <br>
 
         <label for="preco">Preço</label>
-        <input type="" id="preco"></label>
+        <input type="float" name="preco"></label>
 
         <br>
 
         <label for="quantidade_estoque">Quantidade no estoque</label>
-        <input type="" id="quantidade_estoque"></label>
+        <input type="number" name="quantidade_estoque"></label>
 
         <br>
 
