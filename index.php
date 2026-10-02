@@ -35,12 +35,12 @@
     <form action="" method="POST">
 
         <label for="nome">Nome</label>
-        <input type="text" name="nome"></label>
+        <input type="text" name="nome" required></label>
 
         <br>
 
         <label for="categoria">Categoria</label>
-        <select name="categoria">
+        <select name="categoria" required>
             <option value="">Selecione</option>
             <option value="plastico">plastico</option>
             <option value="pano">pano</option>
@@ -50,7 +50,7 @@
         <br>
 
         <label for="faixa_etaria">Faixa etaria</label>
-        <select name="faixa_etaria">
+        <select name="faixa_etaria" required>
             <option value="">Selecione</option>
             <option value="1-5">1-5</option>
             <option value="6-7">6-7</option>
@@ -60,12 +60,12 @@
         <br>
 
         <label for="preco">Preço</label>
-        <input type="float" name="preco"></label>
+        <input type="float" name="preco" required></label>
 
         <br>
 
         <label for="quantidade_estoque">Quantidade no estoque</label>
-        <input type="number" name="quantidade_estoque"></label>
+        <input type="number" name="quantidade_estoque" required></label>
 
         <br>
 
