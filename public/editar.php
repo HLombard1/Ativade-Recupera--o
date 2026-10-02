@@ -4,85 +4,89 @@ include "../infra/conexao.php";
 
 $id = $_GET["id"];
 
-$sql = "SELECT * FROM produtos WHERE id = ?";
+$sql = "SELECT * FROM brinquedos WHERE id=?";
 
-$stmt = $conexao->prepare($sql);
+$stmt = mysqli_prepare($conexao, $sql);
 
-$stmt->bind_param("i", $id);
+mysqli_stmt_bind_param($stmt, "i", $id);
 
-$stmt->execute();
+mysqli_stmt_execute($stmt);
 
-$resultado = $stmt->get_result();
+$resultado = mysqli_stmt_get_result($stmt);
 
-$produto = mysqli_fetch_assoc($resultado);
-
-$stmt->close();
+$brinquedos = mysqli_fetch_assoc($resultado);
 
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edita Produto</title>
+    <title>Editar</title>
+    <link rel="stylesheet" href="style/styles.css">
 </head>
 
 <body>
+    <header>
+        <h1>Edite</h1>
+    </header>
 
-    <h1>Edita o Produto Bro!</h1>
+    <main>
 
-    <form action="atualizar.php" method="POST">
+        <h2>Edite o brinquedo <?php echo $brinquedos["nome"]?>!</h2>
 
-        <input type="hidden" name="id" value="<?php echo $produto['id']; ?>">
+        <form action="atualizar.php" method="POST">
 
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome" value="<?php echo $produto['nome']; ?>">
+            <input type="hidden" name="id" value="<?php echo $brinquedos["id"]?>">
 
-        <br>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" value="<?php echo $brinquedos["nome"]?>">
 
-        <label for="categoria">Categoria:</label>
+            <br>
 
-        <select name="categoria" id="categoria">
+            <label for="categoria">Categoria:</label>
+            <select name="categoria">
+                <option value="">Selecione</option>
+                <option value="plastico" <?php echo ($brinquedos["categoria"] == "plastico") ? "selected" : "" ?>>plastico</option>
+                <option value="pano" <?php echo ($brinquedos["categoria"] == "pano") ? "selected" : "" ?>>pano</option>
+                <option value="maleavel" <?php echo ($brinquedos["categoria"] == "maleavel") ? "selected" : "" ?>>maleavel</option>
+            </select>
 
-            <option value="alimento" <?php if ($produto['categoria'] == 'alimento') echo 'selected'; ?>>
-                Alimento
-            </option>
+            <br>
 
-            <option value="bebida" <?php if ($produto['categoria'] == 'bebida') echo 'selected'; ?>>
-                Bebida
-            </option>
+            <label for="faixa_etaria">Faixa Etária:</label>
 
-            <option value="limpeza" <?php if ($produto['categoria'] == 'limpeza') echo 'selected'; ?>>
-                Limpeza
-            </option>
+            <select name="faixa_etaria">
+                <option value="">Selecione</option>
+                <option value="1-5" <?php echo ($brinquedos["faixa_etaria"] == "1-5") ? "selected" : "" ?>>1-5</option>
+                <option value="6-7" <?php echo ($brinquedos["faixa_etaria"] == "6-7") ? "selected" : "" ?>>6-7</option>
+                <option value="8-12" <?php echo ($brinquedos["faixa_etaria"] == "8-12") ? "selected" : "" ?>>8-12</option>
+            </select>
 
-        </select>
+            <br>
 
-        <br>
+            <label for="preco">Preço:</label>
+            <input type="text" name="preco" value="<?php echo $brinquedos["preco"]?>">
 
-        <label for="descricao">Descrição:</label>
-        <input type="text" name="descricao" id="descricao" value="<?php echo $produto['descricao']; ?>">
+            <br>
 
-        <br>
+            <label for="quantidade_estoque">Quantidade em Estoque:</label>
+            <input type="text" name="quantidade_estoque" value="<?php echo $brinquedos["quantidade_estoque"]?>">
 
-        <label for="preco">Preço:</label>
-        <input type="number" name="preco" id="preco" value="<?php echo $produto['preco']; ?>" step="0.01">
+            <br>
 
-        <br>
+            <button type="submit">Atualizar</button>
 
-        <label for="quantidade_estoque">Quantidade em Estoque:</label>
-        <input type="number" name="quantidade_estoque" id="quantidade_estoque" value="<?php echo $produto['quantidade_estoque']; ?>">
+        </form>
 
-        <br>
+    </main>
 
-        <label for="data_validade">Data de Validade:</label>
-        <input type="date" name="data_validade" id="data_validade" value="<?php echo $produto['data_validade']; ?>">
+    <footer>
 
-        <br>
-
-        <input type="submit" value="Atualizar">
-
-    </form>
+    </footer>
 
 </body>
-</html> 
+
+</html>

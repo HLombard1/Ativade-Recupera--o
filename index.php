@@ -1,45 +1,47 @@
+<!-- Estou curingando professor -->
 <?php
-include "infra/conexao.php";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nome = $_POST["nome"];
-    $categoria = $_POST["categoria"];
-    $descricao = $_POST["descricao"];
-    $preco = $_POST["preco"];
-    $quantidade_estoque = $_POST["quantidade_estoque"];
-    $data_validade = $_POST["data_validade"];
+    include "infra/conexao.php";
+    $brinquedos = mysqli_query($conexao, "SELECT * FROM brinquedos");
 
-    $sql = "INSERT INTO produtos 
-    (nome, categoria, descricao, preco, quantidade_estoque, data_validade) 
-    VALUES (?, ?, ?, ?, ?, ?)";
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        $nome = $_POST["nome"];
+        $categoria = $_POST["categoria"];
+        $faixa_etaria = $_POST["faixa_etaria"];
+        $preco = $_POST["preco"];
+        $quantidade_estoque = $_POST["quantidade_estoque"];
 
-    $stmt = $conexao->prepare($sql);
+        $sql = "INSERT INTO brinquedos(nome, categoria, faixa_etaria, preco, quantidade_estoque) 
+                VALUES (?, ?, ?, ?, ?)";
 
-    $stmt->bind_param(
-        "sssdis",
-        $nome,
-        $categoria,
-        $descricao,
-        $preco,
-        $quantidade_estoque,
-        $data_validade
-    );
+        $stmt = mysqli_prepare($conexao, $sql);
 
-    $stmt->close();
-}
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sssdi",
+            $nome,
+            $categoria,
+            $faixa_etaria,
+            $preco,
+            $quantidade_estoque
+        );
 
-$produtos = $conexao->query("SELECT * FROM produtos");
+        mysqli_stmt_execute($stmt);
+
+    };
+
+
+
 ?>
 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque</title>
+    <title>Loja de Brinquedos</title>
 </head>
 <body>
-
-    <h1>Cadastre um Produto Bro!</h1>
+    <h1>Cadastre um Brinquedo!</h1>
 
     <form action="" method="POST">
 
@@ -51,15 +53,20 @@ $produtos = $conexao->query("SELECT * FROM produtos");
         <label for="categoria">Categoria</label>
         <select name="categoria" required>
             <option value="">Selecione</option>
-            <option value="alimento">Alimento</option>
-            <option value="bebida">Bebida</option>
-            <option value="limpeza">Limpeza</option>
+            <option value="plastico">plastico</option>
+            <option value="pano">pano</option>
+            <option value="maleavel">maleavel</option>
         </select>
-
+        
         <br>
 
-        Descrição <br>
-        <textarea name="descricao" required></textarea>
+        <label for="faixa_etaria">Faixa etaria</label>
+        <select name="faixa_etaria" required>
+            <option value="">Selecione</option>
+            <option value="1-5">1-5</option>
+            <option value="6-7">6-7</option>
+            <option value="8-12">8-12</option>
+        </select>
 
         <br>
 
@@ -73,52 +80,39 @@ $produtos = $conexao->query("SELECT * FROM produtos");
 
         <br>
 
-        <label for="data_validade">Data de Validade</label>
-        <input type="date" name="data_validade" required></label>
+        <button type="submit">Cadastrar</button>
 
-        <br>
-
-        <input type="submit" value="Cadastrar Produto">
     </form>
 
-    <h2>Produtos Cadastrados</h2>
+    <h2>Livros Cadastrados</h2>
 
     <table>
-        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Faixa Etaria</th>
+            <th>Preco</th>
+            <th>Quantidade de Estoque</th>
+        </tr>
+
+        <?php while ($brinquedo = mysqli_fetch_assoc($brinquedos)) { ?>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Quantidade no Estoque</th>
-                <th>Data de Validade</th>
+                <td><?php echo $brinquedo["id"] ?></td>
+                <td><?php echo $brinquedo["nome"] ?></td>
+                <td><?php echo $brinquedo["categoria"] ?></td>
+                <td><?php echo $brinquedo["faixa_etaria"] ?></td>
+                <td><?php echo $brinquedo["preco"] ?></td>
+                <td><?php echo $brinquedo["quantidade_estoque"] ?></td>
+                
+                <td>
+                    <a href="public/editar.php?id=<?php echo $brinquedo["id"] ?>">Editar</a>
+                    <a href="public/excluir.php?id=<?php echo $brinquedo["id"] ?>">Excluir</a>
+                </td>
             </tr>
-        </thead>
+        <?php } ?>
 
-        <tbody>
-
-            <?php while ($produto = mysqli_fetch_assoc($produtos)) { ?>
-
-                <tr>
-                    <td><?php echo $produto["id"] ?></td>
-                    <td><?php echo $produto["nome"] ?></td>
-                    <td><?php echo $produto["categoria"] ?></td>
-                    <td><?php echo $produto["descricao"] ?></td>
-                    <td><?php echo $produto["preco"] ?></td>
-                    <td><?php echo $produto["quantidade_estoque"] ?></td>
-                    <td><?php echo $produto["data_validade"] ?></td>
-
-                    <td>
-                        <a href="public/editar.php?id=<?php echo $produto["id"] ?>">Editar</a>
-                        <a href="public/excluir.php?id=<?php echo $produto["id"] ?>">Excluir</a>
-                    </td>
-                </tr>
-
-            <?php } ?>
-
-        </tbody>
     </table>
-
 </body>
 </html>

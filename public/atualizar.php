@@ -5,35 +5,27 @@ include "../infra/conexao.php";
 $id = $_POST["id"];
 $nome = $_POST["nome"];
 $categoria = $_POST["categoria"];
-$descricao = $_POST["descricao"];
+$faixa_etaria = $_POST["faixa_etaria"];
 $preco = $_POST["preco"];
-$quantidade = $_POST["quantidade_estoque"];
-$data_validade = $_POST["data_validade"];
+$quantidade_estoque = $_POST["quantidade_estoque"];
 
-$sql = "UPDATE produtos 
-        SET nome = ?, 
-            categoria = ?, 
-            descricao = ?, 
-            preco = ?, 
-            quantidade_estoque = ?, 
-            data_validade = ? 
-        WHERE id = ?";
+$sql = "UPDATE brinquedos 
+        SET nome=?, categoria=?, faixa_etaria=?, preco=?, quantidade_estoque=? 
+        WHERE id=?";
 
-$stmt = $conexao->prepare($sql);
+$stmt = mysqli_prepare($conexao, $sql);
 
-$stmt->bind_param(
-    "sssdisi",
+mysqli_stmt_bind_param(
+    $stmt,
+    "sssdis",
     $nome,
     $categoria,
-    $descricao,
+    $faixa_etaria,
     $preco,
-    $quantidade,
-    $data_validade,
+    $quantidade_estoque,
     $id
 );
 
-$stmt->execute();
-
-$stmt->close();
+mysqli_stmt_execute($stmt);
 
 header("Location: ../index.php");

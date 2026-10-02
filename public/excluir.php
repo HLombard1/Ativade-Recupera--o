@@ -4,14 +4,12 @@ include "../infra/conexao.php";
 
 $id = $_GET["id"];
 
-$sql = "DELETE FROM produtos WHERE id = ?";
+$sql = "DELETE FROM brinquedos WHERE id=?";
 
-$stmt = $conexao->prepare($sql);
+$stmt = mysqli_prepare($conexao, $sql);
 
-$stmt->bind_param("i", $id);
+mysqli_stmt_bind_param($stmt, "i", $id);
 
-$stmt->execute();
-
-$stmt->close();
+mysqli_stmt_execute($stmt);
 
 header("Location: ../index.php");
