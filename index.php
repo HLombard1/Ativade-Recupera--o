@@ -2,6 +2,7 @@
 <?php
 
     include "infra/conexao.php";
+    $brinquedos = mysqli_query($conexao, "SELECT * FROM brinquedos");
 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         $nome = $_POST["nome"];
@@ -51,9 +52,9 @@
         <label for="faixa_etaria">Faixa etaria</label>
         <select name="faixa_etaria">
             <option value="">Selecione</option>
-            <option value="plastico">1-5</option>
-            <option value="pano">6-7</option>
-            <option value="maleavel">8-12</option>
+            <option value="1-5">1-5</option>
+            <option value="6-7">6-7</option>
+            <option value="8-12">8-12</option>
         </select>
 
         <br>
@@ -77,6 +78,7 @@
             <table>
 
                 <tr>
+                    <th>ID</th>
                     <th>Nome</th>
                     <th>Categoria</th>
                     <th>Faixa Etaria</th>
@@ -86,14 +88,16 @@
 
                 <?php while ($brinquedo = mysqli_fetch_assoc($brinquedos)) { ?>
                     <tr>
-                        <td><?php echo $brinquedos["nome"] ?></td>
-                        <td><?php echo $brinquedos["categoria"] ?></td>
-                        <td><?php echo $brinquedos["faixa_etaria"] ?></td>
-                        <td><?php echo $brinquedos["preco"] ?></td>
-                        <td><?php echo $brinquedos["quantidade_estoque"] ?></td>
+                        <td><?php echo $brinquedo["id"] ?></td>
+                        <td><?php echo $brinquedo["nome"] ?></td>
+                        <td><?php echo $brinquedo["categoria"] ?></td>
+                        <td><?php echo $brinquedo["faixa_etaria"] ?></td>
+                        <td><?php echo $brinquedo["preco"] ?></td>
+                        <td><?php echo $brinquedo["quantidade_estoque"] ?></td>
+                        
                         <td>
-                            <a href="public/editar.php?id=<?php echo $brinquedos["id"] ?>">Editar</a>
-                            <a href="public/excluir.php?id=<?php echo $brinquedos["id"] ?>">Excluir</a>
+                            <a href="public/editar.php?id=<?php echo $brinquedo["id"] ?>">Editar</a>
+                            <a href="public/excluir.php?id=<?php echo $brinquedo["id"] ?>">Excluir</a>
                         </td>
                     </tr>
                 <?php } ?>
